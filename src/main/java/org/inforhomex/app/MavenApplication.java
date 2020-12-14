@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.inforhomex.app.model.Empleado;
 import org.inforhomex.app.model.Mensaje;
 import org.inforhomex.app.contenedor.Contenedor;
-
+import org.inforhomex.app.extendida.ListaEmpleados;
 
 public class MavenApplication{
 
@@ -32,7 +32,8 @@ public class MavenApplication{
 
         testMockA();
         testMockC(TITULO, CONTENIDO);
-        testMockD(TITULO, CONTENIDO);
+		testMockD(TITULO, CONTENIDO);
+		testMockE();
 	}
 
 
@@ -51,11 +52,29 @@ public class MavenApplication{
 	public static void testMockC(final String titulo, final String contenido){
 		new Mensaje(titulo, contenido).mostrar();
 		LOGGER.info("testMockC-Mensaje: {}", new Mensaje(titulo, contenido));
+		Mensaje mensaje = new Mensaje();
+		mensaje.setTitulo("Felicitaciones");
+		mensaje.setContenido("Has sido el ganador del certamen: JUNIOR DEVELOPER");
+		LOGGER.info("testMockC-Mensaje: {}",mensaje);
 	}
 
 	public static void testMockD(final String titulo, final String contenido){
 		Contenedor contenedor= new Contenedor(new Mensaje(titulo, contenido));
 		LOGGER.info("testMockD-Contenedor: {}", contenedor.ejecutar());
+	}
+
+	public static void testMockE(){
+		ListaEmpleados listaEmpleados = new ListaEmpleados("*** EMPLEADOS ***");
+		LOGGER.info("testMockE-Lista: {}", listaEmpleados.getNombre());
+		listaEmpleados.add(0, new Empleado("Horacio Gomez",34009.00));
+		listaEmpleados.add(1, new Empleado("Jimena Zaras",25000.60));
+		listaEmpleados.add(2, new Empleado("Antonia Sanchez",35000.00));
+		listaEmpleados.add(3, new Empleado("Karla Gomora",25000.40));
+		LOGGER.info("testMockE-Cant. de empleados: {}",listaEmpleados.size());
+		LOGGER.info("tesMock-Empleados:\n");
+		for(Empleado emp: listaEmpleados){
+			LOGGER.info("\ttestMockE-Empleado: {}",emp);
+		}
 	}
 
 }
