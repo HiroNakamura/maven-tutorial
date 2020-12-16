@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import org.inforhomex.app.model.Empleado;
 import org.inforhomex.app.model.Mensaje;
+import org.inforhomex.app.model.MyInmutable;
 import org.inforhomex.app.contenedor.Contenedor;
 import org.inforhomex.app.extendida.ListaEmpleados;
 
@@ -34,6 +35,7 @@ public class MavenApplication{
         testMockC(TITULO, CONTENIDO);
 		testMockD(TITULO, CONTENIDO);
 		testMockE();
+		testMockF();
 	}
 
 
@@ -75,6 +77,11 @@ public class MavenApplication{
 		for(Empleado emp: listaEmpleados){
 			LOGGER.info("\ttestMockE-Empleado: {}",emp);
 		}
+	}
+
+	public static void testMockF(){
+		MyInmutable myInmutable = new MyInmutable("Europa renacida");
+		LOGGER.info("testMockF-MyInmutable: {}", myInmutable);
 	}
 
 }
