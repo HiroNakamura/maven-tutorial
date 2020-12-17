@@ -1,6 +1,5 @@
 package org.inforhomex.app;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Arrays;
@@ -9,12 +8,14 @@ import org.inforhomex.app.model.Mensaje;
 import org.inforhomex.app.model.MyInmutable;
 import org.inforhomex.app.contenedor.Contenedor;
 import org.inforhomex.app.extendida.ListaEmpleados;
+import org.inforhomex.app.extendida.EmpleadosFile;
 
 public class MavenApplication{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MavenApplication.class);
 	private static final String TITULO = "Congratulations!!";
 	private static final String CONTENIDO = "You are the best programmer of the tournament!!";
+	private static final String ARCHIVO = "empleados.csv";
 
 	public static void main(String[] args){
 		LOGGER.info("Hola, desde una aplicacion Maven!!!");
@@ -36,8 +37,8 @@ public class MavenApplication{
 		testMockD(TITULO, CONTENIDO);
 		testMockE();
 		testMockF();
+		testMockG(ARCHIVO);
 	}
-
 
 	public static void testMockA(){
 		Empleado empleado = new Empleado("Raul Lopez", new Double("23300.005"));
@@ -82,6 +83,11 @@ public class MavenApplication{
 	public static void testMockF(){
 		MyInmutable myInmutable = new MyInmutable("Europa renacida");
 		LOGGER.info("testMockF-MyInmutable: {}", myInmutable);
+	}
+
+	public static void testMockG(String archivo){
+		Empleado empleado = new Empleado("Juan Tolomeo Archundia",new Double("12400.00"));
+		LOGGER.info("testMockG-EmpleadosFile: {}",new EmpleadosFile(empleado, archivo).getEmpleadosFile());
 	}
 
 }
