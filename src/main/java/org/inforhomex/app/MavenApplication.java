@@ -3,6 +3,12 @@ package org.inforhomex.app;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Arrays;
+import java.io.File;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import org.inforhomex.app.model.Proveedor;
 import org.inforhomex.app.model.Empleado;
 import org.inforhomex.app.model.Mensaje;
 import org.inforhomex.app.model.MyInmutable;
@@ -38,6 +44,7 @@ public class MavenApplication{
 		testMockE();
 		testMockF();
 		testMockG(ARCHIVO);
+		testMockH();
 	}
 
 	public static void testMockA(){
@@ -88,6 +95,42 @@ public class MavenApplication{
 	public static void testMockG(String archivo){
 		Empleado empleado = new Empleado("Juan Tolomeo Archundia",new Double("12400.00"));
 		LOGGER.info("testMockG-EmpleadosFile: {}",new EmpleadosFile(empleado, archivo).getEmpleadosFile());
+	}
+
+	public static void testMockH(){
+		File file = null;
+		JAXBContext jaxbContext = null;
+		Marshaller jaxbMarshaller = null;
+		Unmarshaller jaxbUnmarshaller = null;
+		Proveedor proveedor = new Proveedor();
+		proveedor.setNombre("Ignacio Colmenares Rojas");
+		LOGGER.info("testMockH-Proveedor: {}", proveedor);
+		try{
+			if(new File("proveedor.xml").exists()){
+				LOGGER.info("testMockH-Borrando archivo XML...");
+				new File("proveedor.xml").delete();
+			}
+			file = new File("proveedor.xml");
+			jaxbContext = JAXBContext.newInstance(Proveedor.class);
+			jaxbMarshaller = jaxbContext.createMarshaller();
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.marshal(proveedor, file);
+			jaxbMarshaller.marshal(proveedor, System.out);
+		}catch(JAXBException ex){
+			LOGGER.error("Error: {}",ex.toString());
+			ex.printStackTrace();
+		}
+		LOGGER.info("testMockH-Obteniendo datos de un XML...");
+		try{
+			jaxbContext = JAXBContext.newInstance(Proveedor.class);
+			jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			Proveedor myProveedor = (Proveedor) jaxbUnmarshaller.unmarshal(file);
+			LOGGER.info("testMockH-Proveedor (obtenido de un XML): {}",myProveedor);
+		}catch(JAXBException ex){
+			LOGGER.error("Error: {}",ex.toString());
+			ex.printStackTrace();
+		}
+		
 	}
 
 }
