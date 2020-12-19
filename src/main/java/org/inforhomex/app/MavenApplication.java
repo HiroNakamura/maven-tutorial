@@ -53,7 +53,7 @@ public class MavenApplication{
 		testMockG(ARCHIVO);
 		testMockH();
 		try{
-			//testMockI();
+			testMockI();
 		}catch(Exception ex){
 			LOGGER.error("Ha ocurrido una excepcion: {}",ex.toString());
 			ex.printStackTrace();
@@ -140,35 +140,54 @@ public class MavenApplication{
 			Proveedor myProveedor = (Proveedor) jaxbUnmarshaller.unmarshal(file);
 			LOGGER.info("testMockH-Proveedor (obtenido de un XML): {}",myProveedor);
 		}catch(JAXBException ex){
-			LOGGER.error("Error: {}",ex.toString());
+			LOGGER.error("Error al obtener datos del XML: {}",ex.toString());
 			ex.printStackTrace();
 		}
 	}
 
-	public static void testMockI()throws IOException{
+	public static void testMockI(){
 		LOGGER.info(" **** Creando PDF con Apache PDF Box ***");
-		PDDocument documento = new PDDocument();
-		PDPage pagina = new PDPage();
-        documento.addPage(pagina);
-        PDPageContentStream cont = new PDPageContentStream(documento, pagina);
-        cont.beginText();
-        cont.setFont(PDType1Font.TIMES_ROMAN, 12);
-        cont.setLeading(14.5f);
-        cont.newLineAtOffset(25, 700);
-        String line1 = "El mejor lenguaje de proegramación es "+ " Java.";
-        cont.showText(line1);
-        cont.newLine();
-        String line2 = "Es importante no olvidarlo. "+ ". Ya que es una necesidad para cualquier programador.";
-        cont.showText(line2);
-        cont.newLine();
-        String line3 = "Eventualmente conocerás otros lenguajes, "+ "pero Java sigue y seguirá siendo el mejor.";
-        cont.showText(line3);
-        cont.newLine();
-        String line4 = "Esta a tiempo de  "+ "aprender a programar en Java.";
-        cont.showText(line4);
-        cont.newLine();
-        cont.endText();
-        documento.save("documento.pdf");
+		PDDocument documento = null;
+		PDPage pagina = null;
+		if(new File("documento.pdf").exists()){
+			new File("documento.pdf").delete();
+			LOGGER.info("testMockI-El documento PDF existe y se ha eliminado!!!");
+		}
+		try{
+			documento = new PDDocument();
+			pagina = new PDPage();
+			documento.addPage(pagina);
+			PDPageContentStream cont = new PDPageContentStream(documento, pagina);
+			cont.beginText();
+			cont.setFont(PDType1Font.TIMES_ROMAN, 12);
+			cont.setLeading(14.5f);
+			cont.newLineAtOffset(25, 700);
+			String line1 = "El mejor lenguaje de programación es "+ " Java.";
+			cont.showText(line1);
+			cont.newLine();
+			String line2 = "Es importante no olvidarlo. "+ "Ya que es una necesidad para cualquier programador.";
+			cont.showText(line2);
+			cont.newLine();
+			String line3 = "Eventualmente conocerás otros lenguajes, "+ "pero Java sigue y seguirá siendo el mejor.";
+			cont.showText(line3);
+			cont.newLine();
+			String line4 = "Estás a tiempo de  "+ "aprender a programar en Java.";
+			cont.showText(line4);
+			cont.newLine();
+			cont.endText();
+			cont.close();
+        }catch(Exception ex){
+        	ex.printStackTrace();
+        }finally{
+        	try{
+        		documento.save("documento.pdf");
+        		documento.close();
+        		LOGGER.info("testMockI-El documento PDF ha sido creado");
+        	}catch(IOException ioe){
+        		LOGGER.error("testMockI-Ha ocurrido una Exception al crear el documento PDF: {}",ioe.toString());
+        		ioe.printStackTrace();
+        	}
+        }
 	}
 
 }
