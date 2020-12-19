@@ -1,5 +1,12 @@
 package org.inforhomex.app;
 
+
+
+import java.io.IOException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Arrays;
@@ -45,6 +52,12 @@ public class MavenApplication{
 		testMockF();
 		testMockG(ARCHIVO);
 		testMockH();
+		try{
+			//testMockI();
+		}catch(Exception ex){
+			LOGGER.error("Ha ocurrido una excepcion: {}",ex.toString());
+			ex.printStackTrace();
+		}
 	}
 
 	public static void testMockA(){
@@ -130,7 +143,32 @@ public class MavenApplication{
 			LOGGER.error("Error: {}",ex.toString());
 			ex.printStackTrace();
 		}
-		
+	}
+
+	public static void testMockI()throws IOException{
+		LOGGER.info(" **** Creando PDF con Apache PDF Box ***");
+		PDDocument documento = new PDDocument();
+		PDPage pagina = new PDPage();
+        documento.addPage(pagina);
+        PDPageContentStream cont = new PDPageContentStream(documento, pagina);
+        cont.beginText();
+        cont.setFont(PDType1Font.TIMES_ROMAN, 12);
+        cont.setLeading(14.5f);
+        cont.newLineAtOffset(25, 700);
+        String line1 = "El mejor lenguaje de proegramación es "+ " Java.";
+        cont.showText(line1);
+        cont.newLine();
+        String line2 = "Es importante no olvidarlo. "+ ". Ya que es una necesidad para cualquier programador.";
+        cont.showText(line2);
+        cont.newLine();
+        String line3 = "Eventualmente conocerás otros lenguajes, "+ "pero Java sigue y seguirá siendo el mejor.";
+        cont.showText(line3);
+        cont.newLine();
+        String line4 = "Esta a tiempo de  "+ "aprender a programar en Java.";
+        cont.showText(line4);
+        cont.newLine();
+        cont.endText();
+        documento.save("documento.pdf");
 	}
 
 }
