@@ -1,7 +1,6 @@
 package org.inforhomex.app;
 
-
-
+import java.awt.Desktop;
 import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -9,6 +8,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.io.File;
 import javax.xml.bind.JAXBContext;
@@ -22,6 +23,7 @@ import org.inforhomex.app.model.MyInmutable;
 import org.inforhomex.app.contenedor.Contenedor;
 import org.inforhomex.app.extendida.ListaEmpleados;
 import org.inforhomex.app.extendida.EmpleadosFile;
+import org.inforhomex.app.extendida.EmpleadosListFile;
 
 public class MavenApplication{
 
@@ -58,6 +60,7 @@ public class MavenApplication{
 			LOGGER.error("Ha ocurrido una excepcion: {}",ex.toString());
 			ex.printStackTrace();
 		}
+		testMockJ();
 	}
 
 	public static void testMockA(){
@@ -182,12 +185,29 @@ public class MavenApplication{
         	try{
         		documento.save("documento.pdf");
         		documento.close();
-        		LOGGER.info("testMockI-El documento PDF ha sido creado");
+				LOGGER.info("testMockI-El documento PDF ha sido creado");
+				File file = new File("documento.pdf");
+				if(file.exists()){
+					LOGGER.info("testMockI-El documento PDF existe y sera abierto");
+					if(Desktop.isDesktopSupported()) {
+						LOGGER.info("testMockI-El documento PDF ha sido abierto");
+						Desktop.getDesktop().open(file);
+					}
+				} 
         	}catch(IOException ioe){
         		LOGGER.error("testMockI-Ha ocurrido una Exception al crear el documento PDF: {}",ioe.toString());
         		ioe.printStackTrace();
         	}
         }
+	}
+
+	public static void testMockJ(){
+		List<Empleado> empleadosList = Arrays.asList(new Empleado("Bruno Acosta",26000.30),new Empleado("Daniel Solorzano",24000.0),new Empleado("Laura Tomassi",25000.90),new Empleado("Karla Alvarez",23000.0));
+		ArrayList<Empleado> empleadosArrayList = new ArrayList<Empleado>();
+		empleadosArrayList.addAll(empleadosList);
+		LOGGER.info("testMockJ-Cant.de empleados {}", empleadosArrayList.size());
+		LOGGER.info("testMockJ-Empleados {}", empleadosArrayList.toString());
+		List<EmpleadosFile> empleadosFile = new ArrayList<EmpleadosFile>();
 	}
 
 }
