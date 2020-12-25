@@ -61,6 +61,7 @@ public class MavenApplication{
 			ex.printStackTrace();
 		}
 		testMockJ();
+		testMockK();
 	}
 
 	public static void testMockA(){
@@ -208,6 +209,27 @@ public class MavenApplication{
 		LOGGER.info("testMockJ-Cant.de empleados {}", empleadosArrayList.size());
 		LOGGER.info("testMockJ-Empleados {}", empleadosArrayList.toString());
 		List<EmpleadosFile> empleadosFile = new ArrayList<EmpleadosFile>();
+		LOGGER.info("testMockJ-Empleados:");
+		int cont = 0;
+		for(Empleado emp : empleadosArrayList) {
+			System.out.println(emp);
+			empleadosFile.add(new EmpleadosFile(emp, String.valueOf(cont)));
+			cont++;
+		}
+		LOGGER.info("testMockJ-EmpleadosFile {}", empleadosFile.toString());
+		EmpleadosListFile empleadosListFile = new EmpleadosListFile();
+		try {
+			empleadosListFile.setEmpleadosFile(empleadosFile.get(0).getEmpleadosFile());
+			LOGGER.info("testMockJ-EmpleadosListFile asignado");
+		}catch(RuntimeException re) {
+			re.printStackTrace();
+		}finally {
+			LOGGER.info("testMockJ-EmpleadosListFile {}", empleadosListFile.getEmpleadosFile());
+		}
+	}
+	
+	public static void testMockK() {
+		
 	}
 
 }
