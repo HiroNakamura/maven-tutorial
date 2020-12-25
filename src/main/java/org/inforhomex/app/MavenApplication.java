@@ -19,11 +19,16 @@ import javax.xml.bind.Unmarshaller;
 import org.inforhomex.app.model.Proveedor;
 import org.inforhomex.app.model.Empleado;
 import org.inforhomex.app.model.Mensaje;
+import org.inforhomex.app.model.Informe;
 import org.inforhomex.app.model.MyInmutable;
 import org.inforhomex.app.contenedor.Contenedor;
 import org.inforhomex.app.extendida.ListaEmpleados;
 import org.inforhomex.app.extendida.EmpleadosFile;
 import org.inforhomex.app.extendida.EmpleadosListFile;
+import org.inforhomex.app.anotaciones.MyAnotacion;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;  
 
 public class MavenApplication{
 
@@ -228,8 +233,32 @@ public class MavenApplication{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void testMockK() {
-		
+		LOGGER.info("testMockK **** Anotaciones Java ****");
+		Informe informe = new Informe();
+		LOGGER.info("testMockK-Informe: {}",informe.mensaje());
+		Class getClase = null;
+		MyAnotacion myAnotacion = null;
+		try {
+			getClase = informe.getClass();
+			LOGGER.info("testMockK-Informe de tipo: {}",getClase.getName());
+			Annotation[] anotaciones = getClase.getAnnotations();    
+		    if(anotaciones.length > 0) {
+		    	LOGGER.info("testMockK-Se ha encontrado anotaciones en lcaseInforme, total: {}",anotaciones.length);
+		    }
+		    getClase = Informe.class;
+		    Annotation anotacion = getClase.getAnnotation(MyAnotacion.class);
+		    if(anotacion !=null) {
+		    	LOGGER.info("testMockK-Anotacion de la clase Informe: {}",anotacion.toString());
+		    }
+		}catch(RuntimeException re) {
+			LOGGER.error("testMockK-RuntimeException {}", re.toString());
+			re.printStackTrace();
+		}catch(Exception ex) {
+			LOGGER.error("testMockK-Exception {}", ex.toString());
+			ex.printStackTrace();
+		}
 	}
 
 }
