@@ -26,6 +26,7 @@ import org.inforhomex.app.extendida.ListaEmpleados;
 import org.inforhomex.app.extendida.EmpleadosFile;
 import org.inforhomex.app.extendida.EmpleadosListFile;
 import org.inforhomex.app.anotaciones.MyAnotacion;
+import org.inforhomex.app.anotaciones.MyOtraAnotacion;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;  
@@ -251,7 +252,14 @@ public class MavenApplication{
 		    Annotation anotacion = getClase.getAnnotation(MyAnotacion.class);
 		    if(anotacion !=null) {
 		    	LOGGER.info("testMockK-Anotacion de la clase Informe: {}",anotacion.toString());
-		    }
+			}
+			
+			Method metodo = informe.getClass().getMethod("mensaje");  
+			MyOtraAnotacion moa = metodo.getAnnotation(MyOtraAnotacion.class);
+			if(moa != null) {
+				LOGGER.info("testMockK-Informe: {} - {}",moa.nombre(), moa.valor());
+			}
+			
 		}catch(RuntimeException re) {
 			LOGGER.error("testMockK-RuntimeException {}", re.toString());
 			re.printStackTrace();
